@@ -22,16 +22,35 @@ See https://data.norge.no/ for ideas
 #### Nasjonalt skoleregister
 🔍 List of schools https://data.norge.no/apis/2178a9a2-c30a-4380-a36a-922102c500f2 
 
+Very promising! Has contact information, long/lat, addresses, etc. 
+Missing info on website for the school. Might be found by scraping? / Google search? / Google Maps API?
+
 
 ### Commercial APIs
+
+#### Google Maps
+Has street view, so we can get a pic of most buildings for free. 
+
 
 
 ### Private APIs / Possible private APIs
 
 We might not have access to all of these, or get access to them.
 
+#### Bookup APIs 
+
+#### Trondheim Bookingbasen APIs
+
+#### Bergen / Stavanger Aktørbasen APIs
+
+#### Oslo K. APIs (future)
 
 
+## Data sources outside APIs
+
+### Kulturalliansens database of øvingslokaler
+
+### 
 
 ## Manual data collection
 
