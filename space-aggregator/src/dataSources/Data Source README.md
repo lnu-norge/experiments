@@ -45,6 +45,8 @@ We might not have access to all of these, or get access to them.
 
 #### Oslo K. APIs (future)
 
+### Kulturhus i Norge
+https://minside.ungdomogfritid.no/map/data.json
 
 ## Data sources outside APIs
 
