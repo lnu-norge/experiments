@@ -1,10 +1,10 @@
 import fs from 'fs'
 import { NSR, filePaths } from './config';
 import { NSR_School, NSR_Enhet } from './nsr-types';
-import { fetchWithExponentialBackoff } from './util'
+import { fetchWithExponentialBackoff } from '../util'
 
+/** Loads enheter from filepPaths.enheter and then downloads all school data from NSR enhet by enhet, and saves to filepPaths.schools */
 export const syncSchoolData = async (refresh = false) => {
-			// Loads enhter from enheter.json and then downloads all school data, and saves to schools.json
 
 			const enheter = JSON.parse(fs.readFileSync(filePaths.enheter).toString('utf-8')) as NSR_Enhet[]
 			console.log(`Syncing ${enheter.length} schools to local data...`)

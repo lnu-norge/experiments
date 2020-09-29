@@ -7,7 +7,10 @@ export const NSR = {
 	specific: (id: string | number) => `/enhet/${id}`
 }
 
+/** File paths for output files */
 export const filePaths = {
-	schools: './data/schools.json',
-	enheter: './data/enheter.json'
+	schools: './data/NSR_schools.json',
+	enheter: './data/NSR_enheter.json',
+	parsedSchools: './data/parsedSchools.json'
+
 }

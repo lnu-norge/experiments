@@ -6,8 +6,8 @@ import fs from 'fs'
 // Uses Nasjonalt skoleregister to make a list of contact information and more 
 // for all schools in Norway
 
-export const syncEnheter = async (): Promise<number | boolean> => {
-	/** Gets the latest list of school data from NSR and saves it to enheter.json */
+	/** Gets the latest list of school data from NSR and saves it to filepath.enheter */
+	export const syncEnheter = async (): Promise<number | boolean> => {
 	try {
 		const data = await fetch(NSR.uri + NSR.all) 
 		const enheter = await data.json() as NSR_Enhet[]

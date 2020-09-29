@@ -8,12 +8,3 @@ export const fetchWithExponentialBackoff = fetchRetry(fetch as any, {
 		return Math.pow(2, attempt) * 1000; // 1000, 2000, 4000
 	}
 })
-
-
-export function delay(delayInms: number) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, delayInms);
-  });
-}

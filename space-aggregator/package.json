@@ -5,8 +5,9 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "dev": "nodemon",
-    "syncEnheter": "ts-node ./src/dataSources/runSyncEnheter.ts",
-    "syncSchoolData": "ts-node ./src/dataSources/runSyncSchoolData.ts"
+    "parseSchoolData": "ts-node ./src/dataSources/NSR/runParseSchoolData.ts",
+    "syncEnheter": "ts-node ./src/dataSources/NSR/runSyncEnheter.ts",
+    "syncSchoolData": "ts-node ./src/dataSources/NSR/runSyncSchoolData.ts"
   },
   "devDependencies": {
     "@types/node": "^14.0.13",
