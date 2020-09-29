@@ -9,8 +9,8 @@ export const NSR = {
 
 /** File paths for output files */
 export const filePaths = {
-	schools: './data/NSR_schools.json',
-	enheter: './data/NSR_enheter.json',
-	parsedSchools: './data/parsedSchools.json'
+	schools: '../data/NSR_schools.json',
+	enheter: '../data/NSR_enheter.json',
+	parsedSchools: '../data/parsedSchools.json'
 
 }
