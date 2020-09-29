@@ -4,12 +4,19 @@
   "main": "index.js",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "syncEnheter": "ts-node ./src/dataSources/runSyncEnheter.ts",
+    "syncSchoolData": "ts-node ./src/dataSources/runSyncSchoolData.ts"
   },
   "devDependencies": {
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.5",
+    "@types/node": "^14.0.13",
     "nodemon": "^2.0.4",
-    "@types/node": "^14.0.13"
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "fetch-retry": "^4.0.1",
+    "node-fetch": "^2.6.1"
   }
 }
