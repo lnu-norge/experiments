@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './scenes/App';
+import AppAndMainState from './scenes/AppAndMainState';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppAndMainState />
   </React.StrictMode>,
   document.getElementById('root')
 );

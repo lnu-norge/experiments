@@ -16,6 +16,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "clean-deep": "^3.4.0",
     "fetch-retry": "^4.0.1",
     "node-fetch": "^2.6.1"
   }

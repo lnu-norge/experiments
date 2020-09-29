@@ -1,0 +1,11 @@
+{
+  "name": "space-aggregator-data",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@types/node": "^14.11.2",
+    "space-aggregator-types": "../types",
+    "typescript": "^3.7.5"
+  }
+}

@@ -2,6 +2,7 @@ import { NSR_School } from 'space-aggregator-types';
 import { filePaths } from "./config"
 import fs from 'fs'
 import { School, School__schoolType, ContactInformation } from 'space-aggregator-types'
+import cleanDeap from 'clean-deep'
 
 /** Imports school data from the .json file at filepath.schools, parses it 
  * to our format, and exports again to filepath.parsedSchools
@@ -89,7 +90,7 @@ export const parseSchoolData = () => {
 		}})
 
 	// Store parsed schools:
-	fs.writeFileSync(filePaths.parsedSchools, JSON.stringify(parsedSchools), 'utf-8')
+	fs.writeFileSync(filePaths.parsedSchools, JSON.stringify(cleanDeap(parsedSchools)), 'utf-8')
 	console.log(`Done parsing ${parsedSchools.length} / ${nsrSchools.length} schools and stored to ${filePaths.parsedSchools}`)
 
 }
