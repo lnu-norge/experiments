@@ -1,7 +1,7 @@
-import { NSR_School } from './nsr-types';
+import { NSR_School } from 'space-aggregator-types';
 import { filePaths } from "./config"
 import fs from 'fs'
-import { School, School__schoolType, ContactInformation } from './school-types';
+import { School, School__schoolType, ContactInformation } from 'space-aggregator-types'
 
 /** Imports school data from the .json file at filepath.schools, parses it 
  * to our format, and exports again to filepath.parsedSchools

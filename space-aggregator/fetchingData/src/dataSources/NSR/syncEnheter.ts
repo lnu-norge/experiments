@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { NSR_Enhet } from './nsr-types'
+import { NSR_Enhet } from 'space-aggregator-types'
 import { filePaths, NSR } from './config'
 import fs from 'fs'
 

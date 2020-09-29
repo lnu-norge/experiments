@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { NSR, filePaths } from './config';
-import { NSR_School, NSR_Enhet } from './nsr-types';
+import { NSR_School, NSR_Enhet } from 'space-aggregator-types';
 import { fetchWithExponentialBackoff } from '../util'
 
 /** Loads enheter from filepPaths.enheter and then downloads all school data from NSR enhet by enhet, and saves to filepPaths.schools */

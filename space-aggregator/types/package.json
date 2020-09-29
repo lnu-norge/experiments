@@ -1,0 +1,7 @@
+{
+  "name": "space-aggregator-types",
+  "version": "1.0.0",
+  "main": "",
+  "types": "index.d.ts",
+  "license": "GPL-3.0-or-later"
+}
