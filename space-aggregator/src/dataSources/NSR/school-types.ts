@@ -14,16 +14,20 @@ export interface Place {
 	lat?: number
 	long?: number
 	address?: NorwegianAddress
+	kommune?: string,
+	fylke?: string
 }
 
 export interface ContactInformation {
 	email?: string,
 	name?: string,
+	personalName?: string,
+	familyName?: string,
 	phone?: string,
 	url?: string
 }
 
-export type School__schoolType = 'vgs' | 'grunnskole' | 'barneskole' | 'ungdomsskole' 
+export type School__schoolType = 'vgs' | 'grunnskole' | 'barneskole' | 'ungdomsskole' | 'voksenopplaeringssenter'
 
 export interface School extends Place, Organization {
 	name: string
@@ -33,5 +37,10 @@ export interface School extends Place, Organization {
 	public?: boolean
 	pupils?: number
 	employees?: number
+	skoleTrinn?: {
+		fra?: number
+		til?: number
+		string?: string
+	}
 } 
 

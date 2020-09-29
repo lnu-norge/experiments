@@ -1,7 +1,7 @@
 import { NSR_School } from './nsr-types';
 import { filePaths } from "./config"
 import fs from 'fs'
-import { School, School__schoolType } from './school-types';
+import { School, School__schoolType, ContactInformation } from './school-types';
 
 /** Imports school data from the .json file at filepath.schools, parses it 
  * to our format, and exports again to filepath.parsedSchools
@@ -15,8 +15,21 @@ export const parseSchoolData = () => {
 		if (nsr.ErVideregaaendeSkole) {
 			schoolTypes.push('vgs')
 		}
-		if (nsr.ErGrunnSkole) {
+		// Try to differentiate between barneskole and ungdomsskole,
+		// as nsr data just gives us "grunnskole":
+		if (nsr.SkoleTrinnFra && nsr.SkoleTrinnFra >= 1 && nsr.SkoleTrinnTil && nsr.SkoleTrinnTil <= 7) {
+			schoolTypes.push('barneskole')
+		} 
+		if (nsr.SkoleTrinnFra && nsr.SkoleTrinnFra >= 8 && nsr.SkoleTrinnTil && nsr.SkoleTrinnTil <= 10) {
+			schoolTypes.push('ungdomsskole')
+		} 
+		if (nsr.ErGrunnSkole && !schoolTypes.includes('barneskole') && !schoolTypes.includes('ungdomsskole')) {
+			// Didn't manage to differentiate, just put it as grunnskole:
 			schoolTypes.push('grunnskole')
+		}
+		// Voksenopplæringgsenter:
+		if (nsr.SkoleTyper?.findIndex(type => type.Id === "10")) {
+			schoolTypes.push('voksenopplaeringssenter')
 		}
 
 		let name = '(Mangler navn)'
@@ -31,18 +44,38 @@ export const parseSchoolData = () => {
 		const pupils = nsr.Elevtall
 		const employees = nsr.AnsatteTil || nsr.AnsatteFra
 
+		const contact: ContactInformation[] = [
+			{
+				name: 'Sentralbord',
+				email: nsr.Epost,
+				phone: nsr.Telefon,
+				url: nsr.Url
+			}
+		]
+
+		if (nsr.Leder || nsr.PersonEpost || nsr.PersonTelefon) {
+			contact.push(	{
+				name: nsr.Leder || '(mangler navn)',
+				personalName: nsr.LederFornavn,
+				familyName: nsr.LederEtternavn,
+				email: nsr.PersonEpost,
+				phone: nsr.PersonTelefon
+			} )
+		}
+
 		return {
 			name,
 			organizationNumber: nsr.OrgNr,
-			contact: [
-				{
-					email: nsr.Epost,
-					phone: nsr.Telefon,
-					url: nsr.Url
-				}
-			],
+			contact,
 			lat: nsr.Koordinater?.Breddegrad,
 			long: nsr.Koordinater?.Lengdegrad,
+			kommune: nsr.KommuneNavn,
+			fylke: nsr.Fylke?.Navn,
+			skoleTrinn: {
+				fra: nsr.SkoleTrinnFra,
+				til: nsr.SkoleTrinnTil,
+				string: nsr.SkoleTrinnFra && nsr.SkoleTrinnTil ? `${nsr.SkoleTrinnFra} - ${nsr.SkoleTrinnTil}` : undefined
+			},
 			address: {
 				street: nsr.Besoksadresse?.Adress,
 				postnumber: nsr.Besoksadresse?.Postnr,
@@ -52,7 +85,7 @@ export const parseSchoolData = () => {
 			types: schoolTypes,
 			public: !!nsr.ErOffentligSkole,
 			pupils,
-			employees
+			employees,
 		}})
 
 	// Store parsed schools:
