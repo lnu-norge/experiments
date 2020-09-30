@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import { School } from 'space-aggregator-types'
-import {Pagination} from 'antd'
+import {Pagination, Card} from 'antd'
+
+import './SpaceList.css'
 
 const SpaceList = ({
 	spaces,
@@ -9,62 +11,88 @@ const SpaceList = ({
 	spaces: School[],
 	setSpaces: React.Dispatch<React.SetStateAction<School[]>>
 }) => {
-	const [page, setPage] = useState(0)
-	const [pageSize, setPageSize] = useState(20)
+	const [page, setPage] = useState(1)
+	const [pageSize, setPageSize] = useState(10)
+	const visibleSpaces = spaces.slice((page -1) * pageSize, (page) * pageSize)
 
-	const visibleSpaces = spaces.slice(page * pageSize, (page + 1) * pageSize)
-
-return <>
-	<Pagination current={page} onChange={(page, pageSize) => {
+	const PaginationElement =	<Pagination 
+	current={page} 
+	pageSize={pageSize}
+	total={Math.ceil((spaces.length) + 1 / pageSize) + 1}
+	onChange={(page, pageSize) => {
 		setPage(page)
 		pageSize && setPageSize(pageSize)
-	}} />
-	<ul>{
+	}} 
+/>
+return <>
+	{PaginationElement}
+	{
 		visibleSpaces.map((space) => {
-		return <li key={space.organizationNumber}>
-			<SpaceListElement
+		return <SpaceListElement
 				space={space}
+				key={space.organizationNumber!}
 			/>
-		</li>
 		})
 	}
-	</ul>
+		{PaginationElement}
+
 </>
 }
 
-const SpaceListElement = ({space}: {space: School}) => {
-	return <>
-		<h3>{space.name}</h3>
+const SpaceListElement = ({space, key}: {space: School, key: string}) => {
+	// @ts-ignore Just WIP data anyway
+	const index = space.index as number
+	return <Card
+		hoverable
+		key={key}
+		className="SpaceListElement__Card"
+	>
+		<div>
+
+		<header>
+		<h3>#{index} {space.name}</h3>
 		<p>{space.public ? 'Offentlig skole' : 'Privatskole'}, {space.types?.join(', ')}</p>
+		</header>
+		<main>
+		<section>
 		<h4>Hvor:</h4>
-		<ul>
-			<li>{space.kommune} kommune</li>
-			<li>{space.fylke} fylke</li>
-			<li>
+		<p>{space.kommune} kommune, {space.fylke}</p>
+		<p>
 				{space.address?.street} <br />
 				{space.address?.postnumber} {space.address?.poststed} 
-			</li>
-		</ul>
+			</p>
+		</section>
+		<section>
+
 		<h4>Om skolen:</h4>
 		
-		<p>Skoletrinn: {space.skoleTrinn?.string}</p>
-		<p>Elever: ca. {space.pupils}</p>
-		<p>Ansatte: ca. {space.employees}</p>
+		<p>Skoletrinn: {space.skoleTrinn?.string}
+		{space.pupils ? <><br />Elever: {space.pupils}</> : null}
+		{space.employees ? <><br />Ansatte: {space.employees}</> : null }
+		</p>
+		</section>
+		<section>
 		<h4>Kontaktinfo:</h4>
-		<h5>Til skolen:</h5>
 		<ul>
-			<li>E-post: {space.contact && space.contact[0]?.email}</li>
-			<li>Telefon: {space.contact && space.contact[0]?.phone}</li>
-			<li>Nettside: {space.contact && space.contact[0]?.url}</li>
+			<li>{space.name}</li>
+			{space.contact && space.contact[0]?.url && <li><a href={'http://' + space.contact[0].url}>{space.contact[0].url}</a></li>}
+			{space.contact && space.contact[0]?.email && <li><a href={"mailto:" + space.contact[0].email}>{space.contact[0].email}</a></li> }
+			{space.contact && space.contact[0]?.phone && <li><a href={"tel:" + space.contact[0].phone}>{space.contact[0].phone}</a></li>  }
 		</ul>
 	
-		<h5>Til rektor:</h5>
+	{space.contact && space.contact[1] &&
+		<><h5>Rektor:</h5>
 		<ul>
-			<li>Navn: {space.contact && space.contact[1]?.name}</li>
-			<li>E-post: {space.contact && space.contact[1]?.email}</li>
-			<li>Telefon: {space.contact && space.contact[1]?.phone}</li>
+		{space.contact[1].name && <li>{space.contact && space.contact[1]?.name}</li> }
+		{space.contact && space.contact[1]?.email && <li><a href={"mailto:" + space.contact[1].email}>{space.contact[1].email}</a></li> }
+			{space.contact && space.contact[1]?.phone && <li><a href={"tel:" + space.contact[1].phone}>{space.contact[1].phone}</a></li>  }
 		</ul>
-	</>
+	</> }
+		</section>
+		</main>
+		
+		</div>
+	</Card>
 }
 
 export default SpaceList
