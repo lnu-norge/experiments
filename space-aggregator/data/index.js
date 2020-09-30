@@ -1,7 +1,6 @@
-import { NSR_Enhet, NSR_School, School } from 'space-aggregator-types';
-const NSR_enheter: NSR_Enhet[] = require('./NSR_enheter.json');
-const NSR_schools: NSR_School[] = require('./NSR_schools.json');
-const parsedSchools: School[] = require('./parsedSchools.json');
+const NSR_enheter = require('./NSR_enheter.json');
+const NSR_schools = require('./NSR_schools.json');
+const parsedSchools = require('./parsedSchools.json');
 
 module.exports = {
 	NSR_enheter,

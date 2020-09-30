@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import SpaceList from '../SpaceList'
 import { School, NSR_Enhet, NSR_School } from 'space-aggregator-types'
+// @ts-ignore Just WIP data anyway
 import originalData from 'space-aggregator-data'
 
 const data : {
