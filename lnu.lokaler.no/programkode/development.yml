@@ -3,6 +3,7 @@ version: "3.7"
 services:
     nginx:
         image: nginx:mainline
+        restart: always
         ports:
             - "443:443"
         volumes:
@@ -13,6 +14,7 @@ services:
         build:
             context: ./frontend
             dockerfile: ./Dockerfile.dev
+        restart: unless-stopped
         volumes:
             - "./frontend/src:/home/node/src"
         environment:
@@ -22,3 +24,32 @@ services:
             - "virtual.host=frontend.lokaler.lnu.test"
             - "virtual.port=3000"
             - "virtual.tls-email=/usr/share/certs/_wildcard.lnu.lokaler.test+2.pem /usr/share/certs/_wildcard.lnu.lokaler.test+2-key.pem"
+    
+    postgres:
+        image: postgres:12
+        restart: unless-stopped
+        volumes: 
+            - "database:/var/lib/postgresql/database"
+        environment:
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "${BACKEND_PASSWORD_DB}"
+
+    backend:
+        image: hasura/graphql-engine:v1.3.2
+        depends_on:
+            - "postgres"
+        restart: unless-stopped
+        environment:
+            HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:${BACKEND_PASSWORD_DB}@postgres:5432/postgres"
+            HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: "/srv/console-assets"
+            HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+            HASURA_GRAPHQL_DEV_MODE: "true"
+            HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+            HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+            HASURA_GRAPHQL_ADMIN_SECRET: ${BACKEND_PASSWORD_ADMIN}
+        command:
+            - graphql-engine
+            - serve
+
+volumes:
+    database:
