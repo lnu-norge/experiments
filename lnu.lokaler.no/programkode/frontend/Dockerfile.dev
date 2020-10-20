@@ -1,0 +1,9 @@
+FROM node:14.10.0
+USER node
+WORKDIR /home/node
+COPY --chown=node:node package.json tsconfig.json yarn.lock ./
+RUN npx browserslist --update-db && yarn
+COPY --chown=node:node .env.docker ./.env
+COPY --chown=node:node public ./public
+EXPOSE 3000
+CMD [ "yarn", "start" ]
