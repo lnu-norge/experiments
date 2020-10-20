@@ -50,6 +50,10 @@ services:
         command:
             - graphql-engine
             - serve
+        labels:
+            - "virtual.host=backend.lokaler.lnu.test"
+            - "virtual.port=8080"
+            - "virtual.tls-email=/usr/share/certs/_wildcard.lnu.lokaler.test+2.pem /usr/share/certs/_wildcard.lnu.lokaler.test+2-key.pem"
 
 volumes:
     database:
