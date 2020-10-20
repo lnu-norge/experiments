@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+    nginx:
+        image: nginx:mainline
+        ports:
+            - "443:443"
+        volumes:
+            - "./backend/nginx/nginx.conf:/etc/nginx/nginx.conf"
+            - "./backend/nginx/certs/:/usr/share/certs/"
+
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: ./Dockerfile.dev
+        volumes:
+            - "./frontend/src:/home/node/src"
+        environment:
+            CHOKIDAR_USEPOLLING: 'true'
+        stdin_open: true
+        labels:
+            - "virtual.host=frontend.lokaler.lnu.test"
+            - "virtual.port=3000"
+            - "virtual.tls-email=/usr/share/certs/_wildcard.lnu.lokaler.test+2.pem /usr/share/certs/_wildcard.lnu.lokaler.test+2-key.pem"
