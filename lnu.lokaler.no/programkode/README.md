@@ -10,6 +10,12 @@ Denne kodebasen består av 2 deler:
 
 Alle instanser av hvor karakteren `~` er tatt i bruk, er da en referanse til hvor rotmappen til denne kodebasen befinner seg. Det vil si mappen du finner denne `README.md`-filen i.
 
+### Prerequisites
+- `docker`
+- `docker-compose`
+  - https://www.docker.com/products/docker-desktop
+- `mkcert`: https://github.com/FiloSottile/mkcert#installation
+
 ## Fullstack m/ Docker
 
 Rediger `/etc/hosts` slik at følgende domener peker til Docker-host:
