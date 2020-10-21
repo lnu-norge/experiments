@@ -1,0 +1,4 @@
+- table:
+    schema: public
+    name: animal_types
+  is_enum: true
