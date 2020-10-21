@@ -35,7 +35,7 @@ services:
             POSTGRES_PASSWORD: "${BACKEND_PASSWORD_DB}"
 
     backend:
-        image: hasura/graphql-engine:v1.3.2
+        image: hasura/graphql-engine:v1.3.2.cli-migrations-v2
         depends_on:
             - "postgres"
         restart: unless-stopped
@@ -47,6 +47,8 @@ services:
             HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
             HASURA_GRAPHQL_ADMIN_SECRET: ${BACKEND_PASSWORD_ADMIN}
+            HASURA_GRAPHQL_MIGRATIONS_DIR: ./backend/hasura/migrations
+            HASURA_GRAPHQL_METADATA_DIR: ./backend/hasura/metadata
         command:
             - graphql-engine
             - serve
