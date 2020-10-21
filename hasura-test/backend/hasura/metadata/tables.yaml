@@ -1,0 +1,38 @@
+- table:
+    schema: public
+    name: animal_types
+  array_relationships:
+  - name: pets
+    using:
+      foreign_key_constraint_on:
+        column: type
+        table:
+          schema: public
+          name: pets
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - type
+      filter: {}
+- table:
+    schema: public
+    name: owners
+  array_relationships:
+  - name: pets
+    using:
+      foreign_key_constraint_on:
+        column: owner
+        table:
+          schema: public
+          name: pets
+- table:
+    schema: public
+    name: pets
+  object_relationships:
+  - name: animal_type
+    using:
+      foreign_key_constraint_on: type
+  - name: ownerByOwner
+    using:
+      foreign_key_constraint_on: owner
