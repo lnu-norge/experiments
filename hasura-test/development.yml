@@ -47,8 +47,11 @@ services:
             HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
             HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-            HASURA_GRAPHQL_MIGRATIONS_DIR: ./backend/hasura/migrations
-            HASURA_GRAPHQL_METADATA_DIR: ./backend/hasura/metadata
+            HASURA_GRAPHQL_MIGRATIONS_DIR: /srv/backend/migrations
+            HASURA_GRAPHQL_METADATA_DIR: /srv/backend/metadata
+        volumes:
+            - ./backend/hasura/metadata:/srv/backend/metadata
+            - ./backend/hasura/migrations:/srv/backend/migrations
         command:
             - graphql-engine
             - serve
