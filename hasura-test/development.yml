@@ -42,11 +42,11 @@ services:
         environment:
             HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:${BACKEND_PASSWORD_DB}@postgres:5432/postgres"
             HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: "/srv/console-assets"
-            HASURA_GRAPHQL_ENABLE_CONSOLE: "true"  # Console ought to be set to false, because we need to use the CLI started console via "hasura console" in backend/hasura instead to get automatic migrations. See https://hasura.io/docs/1.0/graphql/core/migrations/migrations-setup.html#before-you-begin . However, when set to false, the console cli doesn't work? Something is off here...
+            HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
             HASURA_GRAPHQL_DEV_MODE: "true"
             HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
-            HASURA_GRAPHQL_ADMIN_SECRET: ${BACKEND_PASSWORD_ADMIN}
+            HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
             HASURA_GRAPHQL_MIGRATIONS_DIR: ./backend/hasura/migrations
             HASURA_GRAPHQL_METADATA_DIR: ./backend/hasura/metadata
         command:
@@ -56,6 +56,8 @@ services:
             - "virtual.host=backend.lokaler.lnu.test"
             - "virtual.port=8080"
             - "virtual.tls-email=/usr/share/certs/_wildcard.lnu.lokaler.test+2.pem /usr/share/certs/_wildcard.lnu.lokaler.test+2-key.pem"
+
+    
 
 volumes:
     database:
