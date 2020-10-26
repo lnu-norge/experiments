@@ -1,0 +1,6 @@
+version: 2
+endpoint: https://backend.lokaler.lnu.test
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000 # NB: This is from the tutorial, but almost certainly the wrong address. We're at the time of writing not sure what the line does, but heads up: If actions don't work, this might be why.

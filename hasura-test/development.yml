@@ -7,7 +7,7 @@ services:
         ports:
             - "443:443"
         volumes:
-            - "./backend/nginx/nginx.conf:/etc/nginx/nginx.conf"
+            - "./backend/nginx/nginx.dev.conf:/etc/nginx/nginx.conf"
             - "./backend/nginx/certs/:/usr/share/certs/"
 
     frontend:
@@ -35,18 +35,22 @@ services:
             POSTGRES_PASSWORD: "${BACKEND_PASSWORD_DB}"
 
     backend:
-        image: hasura/graphql-engine:v1.3.2
+        image: hasura/graphql-engine:v1.3.2.cli-migrations-v2
         depends_on:
             - "postgres"
         restart: unless-stopped
         environment:
             HASURA_GRAPHQL_DATABASE_URL: "postgres://postgres:${BACKEND_PASSWORD_DB}@postgres:5432/postgres"
-            HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: "/srv/console-assets"
-            HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+            HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
             HASURA_GRAPHQL_DEV_MODE: "true"
             HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
-            HASURA_GRAPHQL_ADMIN_SECRET: ${BACKEND_PASSWORD_ADMIN}
+            HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+            HASURA_GRAPHQL_MIGRATIONS_DIR: /srv/backend/migrations
+            HASURA_GRAPHQL_METADATA_DIR: /srv/backend/metadata
+        volumes:
+            - ./backend/hasura/metadata:/srv/backend/metadata
+            - ./backend/hasura/migrations:/srv/backend/migrations
         command:
             - graphql-engine
             - serve

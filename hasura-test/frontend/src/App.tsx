@@ -1,6 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
+import logo from './logo.svg';
+
+import { Button } from 'antd';
+
 import { gql, useQuery, ApolloClient, ApolloProvider, InMemoryCache, HttpLink } from '@apollo/client';
 
 const createApolloClient = () => {
@@ -48,7 +52,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React <Button type="primary">Button</Button>
         </a> 
         <ApolloProvider client={client}>
           <div>Apollo testing</div>
