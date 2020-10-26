@@ -7,7 +7,7 @@ services:
         ports:
             - "443:443"
         volumes:
-            - "./backend/nginx/nginx.conf:/etc/nginx/nginx.conf"
+            - "./backend/nginx/nginx.dev.conf:/etc/nginx/nginx.conf"
             - "./backend/nginx/certs/:/usr/share/certs/"
 
     frontend:
