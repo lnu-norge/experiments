@@ -1,7 +1,7 @@
 /** National Scool Registry data URIs and end points. 
  * See https://data-nsr.udir.no//swagger/ui/index for docs
  */
-export const NSR = {
+export const endpoints = {
 	uri: 'https://data-nsr.udir.no',
 	all: '/enheter',
 	specific: (id: string | number) => `/enhet/${id}`
@@ -9,8 +9,8 @@ export const NSR = {
 
 /** File paths for output files */
 export const filePaths = {
-	schools: '../data/NSR_schools.json',
-	enheter: '../data/NSR_enheter.json',
-	parsedSchools: '../data/parsedSchools.json'
+	all: '../data/NSR_enheter.json',
+	specifics: '../data/NSR_schools.json',
+	parsed: '../data/parsedSchools.json'
 
 }
