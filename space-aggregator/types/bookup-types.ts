@@ -3,7 +3,7 @@
 export interface BookupGetLIstByParamsSearchResult {
 	Count: number,
 	IsValid: boolean, 
-	RentObjects: BookupRentObject[],
+	RentObjects: BookupSearchResultRentObject[],
 	Categories: any[]
 }
 
@@ -61,9 +61,6 @@ export interface BookupAttachment {
 	PriceDoc: boolean
 }
 
-export interface BookupIncludedService {
-	Title: string
-}
 
 export interface BookupCompactOpeningHours {
 	/** E.g. Man-Fre */
@@ -72,7 +69,7 @@ export interface BookupCompactOpeningHours {
 	Second: string
 }
 
-export interface BookupRentObject {
+export interface BookupSearchResultRentObject {
 	Id: number,
 	/** Used for last updated, can also be used for syncing
 	 * Format: "2020-11-14T15:39:26.957"
@@ -130,9 +127,49 @@ export interface BookupRentObject {
 	/** Images */
 	Medias: BookupMedia[],
 	/** Attachments, e.g. PDFs */
-	Attachments: BookupAttachment[],
+	Attachments: BookupAttachment[]
 
 	/** E.g. bord og stoler */
-	IncludedServices: BookupIncludedService[],
+	IncludedServices: BookupCategory[],
 
 }
+
+export interface BookupContactInformation {
+	Id: number
+	Name: string
+	Role: string
+	Phone?: string
+	Email?: string
+}
+
+export interface BookupFacilities {
+	Title: string
+	Description?: string
+	Price?: number
+	VAT?: number
+}
+
+export interface BookupCategory {
+	Id?: number
+	Title: string
+	ParentId?: number
+	SubCategories?: BookupCategory[]
+}
+
+/** Full, specific, information, when fetched individually 
+ * 
+ * // TODO: Include pricing information, as that's here too, but not mapped yet
+*/
+export interface BookupRentObject extends BookupSearchResultRentObject {
+	/** Name of owner */
+	ClientTitle: string
+	ClientLogoUrl: string
+	/** Who to contact */
+	Contacts: BookupContactInformation[]
+	/** List of things you can choose between, not used as list of facilities as far as I can tell */
+	Facilities: BookupFacilities[]
+	/** List of ways to categorize this, can be several deep */
+	Categories: BookupCategory[]
+}
+
+
