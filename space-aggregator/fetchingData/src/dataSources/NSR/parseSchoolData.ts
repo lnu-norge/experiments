@@ -8,7 +8,7 @@ import cleanDeap from 'clean-deep'
  * to our format, and exports again to filepath.parsedSchools
  */
 export const parseSchoolData = () => {
-	const nsrSchools = JSON.parse(fs.readFileSync(filePaths.schools).toString('utf-8')) as NSR_School[]
+	const nsrSchools = JSON.parse(fs.readFileSync(filePaths.specifics).toString('utf-8')) as NSR_School[]
 	console.log(`Parsing ${nsrSchools.length} schools to LNU data format...`)
 
 	const parsedSchools: School[] = nsrSchools.map(nsr => {
@@ -47,7 +47,8 @@ export const parseSchoolData = () => {
 
 		const contact: ContactInformation[] = [
 			{
-				name: 'Sentralbord',
+				role: 'Sentralbord',
+				name: name,
 				email: nsr.Epost,
 				phone: nsr.Telefon,
 				url: nsr.Url
@@ -56,6 +57,7 @@ export const parseSchoolData = () => {
 
 		if (nsr.Leder || nsr.PersonEpost || nsr.PersonTelefon) {
 			contact.push(	{
+				role: 'Rektor',
 				name: nsr.Leder || '(mangler navn)',
 				personalName: nsr.LederFornavn,
 				familyName: nsr.LederEtternavn,
@@ -64,6 +66,8 @@ export const parseSchoolData = () => {
 			} )
 		}
 
+		// Get kommune and fylke data: 
+
 		return {
 			name,
 			organizationNumber: nsr.OrgNr,
@@ -71,7 +75,9 @@ export const parseSchoolData = () => {
 			lat: nsr.Koordinater?.Breddegrad,
 			long: nsr.Koordinater?.Lengdegrad,
 			kommune: nsr.KommuneNavn,
+			kommuneNummer: nsr.Kommune?.Kommunenr,
 			fylke: nsr.Fylke?.Navn,
+			fylkesNummer: nsr.Fylke?.Fylkesnr,
 			skoleTrinn: {
 				fra: nsr.SkoleTrinnFra,
 				til: nsr.SkoleTrinnTil,
@@ -90,7 +96,7 @@ export const parseSchoolData = () => {
 		}})
 
 	// Store parsed schools:
-	fs.writeFileSync(filePaths.parsedSchools, JSON.stringify(cleanDeap(parsedSchools)), 'utf-8')
-	console.log(`Done parsing ${parsedSchools.length} / ${nsrSchools.length} schools and stored to ${filePaths.parsedSchools}`)
+	fs.writeFileSync(filePaths.parsed, JSON.stringify(cleanDeap(parsedSchools)), 'utf-8')
+	console.log(`Done parsing ${parsedSchools.length} / ${nsrSchools.length} schools and stored to ${filePaths.parsed}`)
 
 }

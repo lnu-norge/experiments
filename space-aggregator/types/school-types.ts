@@ -14,15 +14,17 @@ export interface Place {
 	lat?: number
 	long?: number
 	address?: NorwegianAddress
-	kommune?: string,
+	kommune?: string
+	kommuneNummer?: string
 	fylke?: string
+	fylkesNummer?: string
 }
-
 export interface ContactInformation {
 	email?: string,
 	name?: string,
 	personalName?: string,
 	familyName?: string,
+	role?: string,
 	phone?: string,
 	url?: string
 }
@@ -42,5 +44,4 @@ export interface School extends Place, Organization {
 		til?: number
 		string?: string
 	}
-} 
-
+}

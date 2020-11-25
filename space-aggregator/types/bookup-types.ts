@@ -101,14 +101,16 @@ export interface BookupSearchResultRentObject {
 	}
 	CompactOpeningHours: BookupCompactOpeningHours[]
 
-	/** If the room is split into different parts, there is info about each one - as well as pricing for each one */
+	/** If the space is split into different parts, there is info about each one - as well as pricing for each one */
 	PartInfo: BookingPartInfoWrapper 
 	OnlyPartRent: boolean
 
 	/** Not sure what this is */
 	RentType: number
 
+	/** Set to 0 if missing info */
 	SizeSqM2: number 
+	/** Set to 0 if missing info */
 	SizePeople: number 
 
 	HomePage: string 
