@@ -174,4 +174,10 @@ export interface BookupRentObject extends BookupSearchResultRentObject {
 	Categories: BookupCategory[]
 }
 
+export interface BookupSpecifics {
+	RentObject: BookupRentObject,
+	Reference: string,
+	MonthOrWeek: any,
+	Order: any
+}
 

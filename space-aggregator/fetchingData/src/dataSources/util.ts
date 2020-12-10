@@ -1,6 +1,12 @@
+import { filePaths } from './Bookup/config';
+import { Space } from 'space-aggregator-types';
 import fetch from 'node-fetch' 
 import fetchRetry from 'fetch-retry'
 import fs from 'fs'
+
+interface Config { 
+	endpoints: { 
+		uri: string, all: string, specific: (id: string|number) => string }, filePaths: { all: string, specifics: string, parsed: string } }
 
 export const fetchWithExponentialBackoff = fetchRetry(fetch as any, {
 	retries: 6,
@@ -11,7 +17,7 @@ export const fetchWithExponentialBackoff = fetchRetry(fetch as any, {
 
 
 export const syncAll = async (
-	config: { endpoints: { uri: string, all: string, specific: (id: string|number) => string }, filePaths: { all: string, specifics: string, parsed: string } }, 
+	config: Config, 
 	filterFunction = (input: any): any[] => input ): Promise<number | boolean> => {
 		/** Function to fetch from json and store to file as defined in config
 		 * Pass a valid config file, and pass an optional filterFunction to reduce the input before storing it
@@ -32,7 +38,7 @@ export const syncAll = async (
 
 
 export const syncOneByOne = async (
-	config: { endpoints: { uri: string, all: string, specific: (id: string|number) => string }, filePaths: { all: string, specifics: string, parsed: string } }, 
+	config: Config, 
 	getIdFromSpecific = (input: any) => input.id, 
 	checkIfIdsMatch = (fromAll: any, fetchedSpecific: any) => fromAll.id === fetchedSpecific.id,
 	refresh = false) => {
@@ -91,4 +97,27 @@ export const syncOneByOne = async (
 			}
 		}
 
+}
+
+export const parseSpecificsIntoSpaces = async <T>(
+	config: Config, 
+	parserFunction: (input: T[]) => Promise<Space[]>
+): Promise<Space[]> => {
+	const {endpoints, filePaths} = config
+	try {
+		const specifics = JSON.parse(fs.readFileSync(filePaths.specifics).toString('utf-8')) as T[]
+		
+		const spaces = await parserFunction(specifics)
+		
+		// Store them:
+		fs.writeFileSync(filePaths.parsed, JSON.stringify(spaces))
+		console.log(`Stored ${spaces.length} parsed elements to`, filePaths.parsed)
+
+		// Then return them:
+		return spaces
+	} catch (error) {
+		console.error("Error when parsing")
+		console.error(error)
+		return []
+	}
 }
