@@ -21,14 +21,29 @@ const ParserFunctionBookupIntoSpace = async (
 		}
 	})
 
+
+
 	for (let index = 0; index < BookupSpecifics.length; index++) {
 		const RentObject = BookupSpecifics[index].RentObject
+
+		if (
+			!RentObject.IsActive || 
+			!RentObject.Address 
+		) {
+
+
+			continue; // Not active, or not releveant
+		}
 
 			// Temporary constant for conditionally adding 
 			// information to Space if present in BookupRentOjbect
 			// Added to the full Space later
 			const SpaceContents = <Partial<Space>> {}
 			console.log('Start parsing ', RentObject.Title)
+
+			const addMetaInfo = (data: any) => {
+				SpaceContents.meta?.push(info(data))
+			}
 
 			if (RentObject.Contacts) {
 				SpaceContents.contacts = <Sourced<ContactInformation>[]> RentObject.Contacts.map(BookupContact => {
@@ -67,16 +82,14 @@ const ParserFunctionBookupIntoSpace = async (
 					if (SpaceContents.lat && SpaceContents.lon) {
 						console.log('Fetching kommunedata for ', RentObject.Title)
 						const kommuneData = await getKommuneAndFylkeFromLatLong(SpaceContents.lat, SpaceContents.lon)
-						if (kommuneData?.kommunenavn) {
+						if (kommuneData 
+							&& kommuneData.kommunenavn
+							&& kommuneData.kommunenummer
+							&& kommuneData.fylkesnavn
+							&& kommuneData.fylkesnummer) {
 							SpaceContents.kommune = kommuneData.kommunenavn
-						}
-						if (kommuneData?.kommunenummer) {
 							SpaceContents.kommuneNummer = kommuneData.kommunenummer
-						}
-						if (kommuneData?.fylkesnavn) {
 							SpaceContents.fylke = kommuneData?.fylkesnavn
-						}
-						if (kommuneData?.fylkesnummer) {
 							SpaceContents.fylkesNummer = kommuneData?.fylkesnummer
 						}
 					}
@@ -90,11 +103,43 @@ const ParserFunctionBookupIntoSpace = async (
 		console.log('Storing under id ', id)
 
 		if (!id) {
-			continue // No need to store something we can't make an ID out of
+			continue // No need to store something we can't make an ID out of the address for
 			// That something is probably not a place anyway.
 		}
 
-		//	SpaceContents.meta = [info(RentObject)]
+
+		// TODO: Decide if and how to include this data
+		addMetaInfo(
+			RentObject.Facilities
+		)
+		addMetaInfo(
+			RentObject.Categories
+		)
+		addMetaInfo(
+			RentObject.AgeLimit
+		)
+		addMetaInfo(
+			RentObject.CompactOpeningHours
+		)
+		addMetaInfo(
+			RentObject.PartInfo
+		)
+		addMetaInfo(
+			RentObject.SizeSqM2
+		)
+		addMetaInfo(
+			RentObject.SizePeople
+		)
+		addMetaInfo(
+			RentObject.Medias
+		)
+		addMetaInfo(
+			RentObject.Attachments
+		)
+		addMetaInfo(
+			RentObject.IncludedServices
+		)
+		
 			spaces.push({
 				id,
 				title: info(RentObject.Title),

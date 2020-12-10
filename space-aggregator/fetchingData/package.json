@@ -7,7 +7,7 @@
     "bookup:syncGenerics": "ts-node ./src/dataSources/Bookup/runSyncBookupAll.ts",
     "bookup:syncSpecifics": "ts-node ./src/dataSources/Bookup/runSyncBookupSpecifics.ts",
     "bookup:parseData": "ts-node ./src/dataSources/Bookup/runParseBookupIntoSpace.ts",
-    "nsr:parseSchoolData": "ts-node ./src/dataSources/NSR/runParseSchoolData.ts",
+    "nsr:parseData": "ts-node ./src/dataSources/NSR/runParseSchoolData.ts",
     "nsr:syncEnheter": "ts-node ./src/dataSources/NSR/runSyncEnheter.ts",
     "nsr:syncSchoolData": "ts-node ./src/dataSources/NSR/runSyncSchoolData.ts"
   },

@@ -15,7 +15,8 @@ const idFromAddress = (address: NorwegianAddress) => {
 		poststed
 	} = address
 
-	if (!(street && postnumber && poststed)) {
+	if (!(postnumber && poststed)) {
+		console.log(address)
 		console.error("Not a full address, cannot create ID")
 		return null
 	}
@@ -23,7 +24,7 @@ const idFromAddress = (address: NorwegianAddress) => {
 	// Then we normalize the address, and make it into one long string
 	let stringId = ''
 	
-	stringId += street.toLowerCase()
+	if (street) stringId += street.toLowerCase()
 		// IDEA: Might want to replace gt with gate, etc, here. to normalize it... 
 		// Or we look up the street with some address tool to find the ID from there?
 

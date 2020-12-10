@@ -1,2 +1,2 @@
-import { parseSchoolData } from './parseSchoolData';
+import parseSchoolData from './parseSchoolDataIntoSpace';
 parseSchoolData()
