@@ -118,8 +118,8 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 
 		console.log('nsr', nsr.Besoksadresse)
 		console.log('norwegianaddresss', SpaceContents.address)
-		const id = SpaceContents.address && idFromAddress(SpaceContents.address) ? idFromAddress(SpaceContents.address)! : false
-		if (!id) {
+		const addressAsId = SpaceContents.address && idFromAddress(SpaceContents.address) ? idFromAddress(SpaceContents.address)! : false
+		if (!addressAsId) {
 			continue 
 			// No need to store something we can't make an ID out of the address for
 			// That something is probably not a place anyway.
@@ -127,7 +127,7 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 
 	
 		spaces.push({
-			id,
+			addressAsId,
 			title: info(name),
 			contacts,
 			lat: nsr.Koordinater?.Breddegrad,

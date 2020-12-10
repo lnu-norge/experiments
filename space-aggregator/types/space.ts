@@ -63,7 +63,7 @@ export interface Sourced<T> {
 }
 
 export interface Space extends Place {
-	id: string
+	addressAsId: string
 	title: Sourced<string>
 	description?: Sourced<string>
 	images?: Sourced<Image>[]

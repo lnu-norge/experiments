@@ -1,4 +1,4 @@
-import { getKommuneAndFylkeFromLatLong } from './../kommuner';
+import { getKommuneAndFylkeFromLatLong } from './../geoDataApi';
 import { Space, Sourced, ContactInformation, BookupSpecifics, NorwegianAddress } from 'space-aggregator-types';
 import { parseSpecificsIntoSpaces } from "../util";
 import * as bookupConfig from './config';
@@ -20,7 +20,6 @@ const ParserFunctionBookupIntoSpace = async (
 			lastUpdated: Date.now() // TODO: Should set this to the date we fetched the info, not the date we parsed it
 		}
 	})
-
 
 
 	for (let index = 0; index < BookupSpecifics.length; index++) {
@@ -99,10 +98,10 @@ const ParserFunctionBookupIntoSpace = async (
 				}			
 			}
 
-		const id = SpaceContents.address && idFromAddress(SpaceContents.address) ? idFromAddress(SpaceContents.address)! : false
-		console.log('Storing under id ', id)
+		const addressAsId = SpaceContents.address && idFromAddress(SpaceContents.address) ? idFromAddress(SpaceContents.address)! : false
+		console.log('Storing under id ', addressAsId)
 
-		if (!id) {
+		if (!addressAsId) {
 			continue // No need to store something we can't make an ID out of the address for
 			// That something is probably not a place anyway.
 		}
@@ -141,7 +140,7 @@ const ParserFunctionBookupIntoSpace = async (
 		)
 		
 			spaces.push({
-				id,
+				addressAsId,
 				title: info(RentObject.Title),
 				...SpaceContents 
 			})
