@@ -1,0 +1,24 @@
+{
+  "name": "search",
+  "description": "Typesense search API for experimenting with space aggregator data",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "search:create": "ts-node ./src/createIndex.ts",
+    "search:indexSpaces": "ts-node ./src/indexSpaces.ts",
+    "search": "nodemon ./src/searchSpaces.ts"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.12.5",
+    "nodemon": "^2.0.6",
+    "typesense": "^0.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.13",
+    "@types/node-fetch": "^2.5.7",
+    "space-aggregator-types": "../types",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  }
+}
