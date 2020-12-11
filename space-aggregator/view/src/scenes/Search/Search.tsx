@@ -38,6 +38,14 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 
+const ToogleBinary = (attribute: string, trueLabel = "Ja", falseLabel = "Nei") => <RefinementList 
+attribute={attribute} 
+transformItems={(items: any) => sortItemsBySize(items.map((item: any) => ({
+	...item, 
+	label: item.label === "true" ? trueLabel : falseLabel
+})))}
+/>
+
 const sortItemsBySize = (items: any[]) => {
 	return items.sort((a, b) => a.count > b.count ? -1 : 1)
 }
@@ -70,13 +78,7 @@ const Search = () => {
                   }}
                 />
 						<h4>Hvordan bookes det:</h4>
-						<RefinementList 
-							attribute="includesLinkToBookingPage" 
-							transformItems={(items: any) => sortItemsBySize(items.map((item: any) => ({
-								...item, 
-								label: item.label === "true" ? "Bookingsystem" : "Kontakt for avtale" 
-							})))}
-							/>
+							{ToogleBinary('includesLinkToBookingPage','Bookingsystem', 'Kontakt for avtale')}
 							<h4>Hvor mange er det plass til:</h4>
 							<h5>Mennesker:</h5>
 						<RangeInput 
@@ -86,6 +88,9 @@ const Search = () => {
 						<RangeInput 
 							attribute="sizeInSqm" 
 							/>
+						<h4>Type:</h4>
+						{ToogleBinary('wholeBuildning','Hel bygning', 'Annet')}
+
 						<h4>Fylke:</h4>
 						<RefinementList 
 							attribute="fylke" 

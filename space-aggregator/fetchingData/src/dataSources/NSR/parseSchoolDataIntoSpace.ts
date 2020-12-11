@@ -131,7 +131,7 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 			}
 			SpaceContents.fitsPeople = info(people)
 		}
-		SpaceContents.wholeBuilding = info(true) // True for all NSR schools? Probably... But not necessarily.
+		SpaceContents.wholeBuildning = info(true) // True for all NSR schools? Probably... But not necessarily.
 	
 		spaces.push({
 			addressAsId,

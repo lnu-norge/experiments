@@ -107,7 +107,7 @@ const ParserFunctionBookupIntoSpace = async (
 		if (RentObject.SizePeople) {
 			SpaceContents.fitsPeople = info(RentObject.SizePeople)
 		}
-		// TODO: Find out if we can do wholeBuilding somehow from Bookup data
+		// TODO: Find out if we can do wholeBuildning somehow from Bookup data
 
 		// TODO: Decide if and how to include this data
 		addMetaInfo(

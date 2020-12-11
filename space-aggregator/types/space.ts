@@ -72,5 +72,5 @@ export interface Space extends Place {
 	subSpaces?: Space[]
 	fitsPeople?: Sourced<number>
 	sizeInSqm?: Sourced<number>
-	wholeBuilding?: Sourced<boolean>
+	wholeBuildning?: Sourced<boolean>
 }
