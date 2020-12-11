@@ -40,11 +40,16 @@ const Hit = (props: {hit: any}) => {
   console.log(props)
   const fullData = props.hit.fullData as Space
   const {
-    title,
+    contacts,
     address
   } = fullData
+  const {
+    description,
+    title
+  } = props.hit._highlightResult 
+  
   return <article>
-      <h3>{title.info}</h3>
+      <h3 dangerouslySetInnerHTML={{__html: title?.value}}></h3>
       <p>
         {address?.street}<br />
         {address?.postnumber} {address?.poststed}
@@ -52,9 +57,9 @@ const Hit = (props: {hit: any}) => {
       <VisBookingLenker fullData={fullData} />
       <hr />
       <h4>Kontaktinfo:</h4>
-      {fullData.contacts && fullData.contacts.map(contact => <ContactInfo sourcedContactInfo={contact} />)}
+      {contacts && contacts.map(contact => <ContactInfo sourcedContactInfo={contact} />)}
       <hr />
-      {fullData.description && <div dangerouslySetInnerHTML={{__html: fullData.description.info}}></div>}
+      {description?.value && <div dangerouslySetInnerHTML={{__html: description.value}}></div>}
       <p>
         <PropsToConsole props={props}/>
       </p>
