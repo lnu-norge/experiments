@@ -11,14 +11,18 @@
     "@types/node": "^12.12.62",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
+    "@types/react-instantsearch-dom": "^6.8.0",
     "antd": "^4.6.6",
     "less": "^3.12.2",
     "less-loader": "^7.0.1",
+    "prepend-http": "^3.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-instantsearch-dom": "^6.8.2",
     "react-scripts": "3.4.3",
     "space-aggregator-data": "../data",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "typesense-instantsearch-adapter": "^0.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
