@@ -18,8 +18,8 @@ const spaceIndex = {
     {name: 'lat', type: 'float', optional: true },
     {name: 'lon', type: 'float', optional: true },
     {name: 'street', type: 'string' },
-    {name: 'postnumber', type: 'string' },
-    {name: 'poststed', type: 'string' },
+    {name: 'postnumber', type: 'string', facet: true },
+    {name: 'poststed', type: 'string', facet: true  },
     {name: 'addressAsId', type: 'string', facet: true },
   ],
   'default_sorting_field': 'rating'
