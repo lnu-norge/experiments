@@ -61,7 +61,6 @@ export interface Sourced<T> {
 	changelog?: Change<T>[]
 	source: SourceOfInformation
 }
-
 export interface Space extends Place {
 	addressAsId: string
 	title: Sourced<string>
@@ -71,4 +70,7 @@ export interface Space extends Place {
 	contacts?: Sourced<ContactInformation>[]
 	meta?: Sourced<any>[]
 	subSpaces?: Space[]
+	fitsPeople?: Sourced<number>
+	sizeInSqm?: Sourced<number>
+	wholeBuilding?: Sourced<boolean>
 }

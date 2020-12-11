@@ -22,6 +22,9 @@ const spaceIndex = {
     {name: 'poststed', type: 'string', facet: true  },
     {name: 'addressAsId', type: 'string', facet: true },
     {name: 'includesLinkToBookingPage', type: 'bool', facet: true },
+    {name: 'fitsPeople', type: 'int32', facet: true, optional: true  },
+    {name: 'sizeInSqm', type: 'int32', facet: true, optional: true  }, 
+    {name: 'wholeBuildning', type: 'bool', facet: true, optional: true  }, 
   ],
   'default_sorting_field': 'rating'
 }

@@ -1,7 +1,7 @@
 import { NSR_School, Sourced, Space } from 'space-aggregator-types';
 import * as nsrConfig from './config';
 import {  School__schoolType, ContactInformation } from 'space-aggregator-types'
-import { parseSpecificsIntoSpaces } from '../util';
+import { infoGenerator, parseSpecificsIntoSpaces } from '../util';
 import idFromAddress from '../idFromAddress';
 import { getPoststedFromPostnummer } from '../geoDataApi';
 
@@ -14,13 +14,8 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 	const spaces = [] as Space[]
 
 
-	const info = <T>(data: T): Sourced<T> => ({
-		info: data,
-		source: {
-			type: 'nsr',
-			lastUpdated: Date.now() // TODO: Should set this to the date we fetched the info, not the date we parsed it
-		}
-	})
+	const info = infoGenerator('nsr')
+
 
 	for (let index = 0; index < nsrSchools.length; index++) {
 		const nsr = nsrSchools[index]
@@ -125,6 +120,18 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 			// That something is probably not a place anyway.
 		}
 
+		if (nsr.Elevtall) {
+			// Add pupils:
+			let people = nsr.Elevtall
+			// Add staff:
+			if (nsr.AnsatteTil) {
+				people += nsr.AnsatteTil
+			} else if (nsr.AnsatteFra) {
+				people += nsr.AnsatteFra
+			}
+			SpaceContents.fitsPeople = info(people)
+		}
+		SpaceContents.wholeBuilding = info(true) // True for all NSR schools? Probably... But not necessarily.
 	
 		spaces.push({
 			addressAsId,

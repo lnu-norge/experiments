@@ -10,7 +10,8 @@ import {
 	Pagination,
 	RefinementList,
 	HitsPerPage,
-	ToggleRefinement
+	RangeInput,
+	CurrentRefinements,
 } from 'react-instantsearch-dom'
 import './Search.css'
 
@@ -29,12 +30,17 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  So you can pass any parameters supported by the search endpoint below.
   //  queryBy is required.
   additionalSearchParameters: {
-		queryBy: "title,description",
-		prefix: false
+		queryBy: "title, description",
+		prefix: true,
+		num_typos: 1
   }
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
+
+const sortItemsBySize = (items: any[]) => {
+	return items.sort((a, b) => a.count > b.count ? -1 : 1)
+}
 
 const Search = () => {
 	 return <div>
@@ -66,16 +72,26 @@ const Search = () => {
 						<h4>Hvordan bookes det:</h4>
 						<RefinementList 
 							attribute="includesLinkToBookingPage" 
-							transformItems={(items: any) => items.map((item: any) => ({
+							transformItems={(items: any) => sortItemsBySize(items.map((item: any) => ({
 								...item, 
 								label: item.label === "true" ? "Bookingsystem" : "Kontakt for avtale" 
-							}))}
+							})))}
+							/>
+							<h4>Hvor mange er det plass til:</h4>
+							<h5>Mennesker:</h5>
+						<RangeInput 
+							attribute="fitsPeople" 
+							/>
+						<h5>Kvadratmeter:</h5>
+						<RangeInput 
+							attribute="sizeInSqm" 
 							/>
 						<h4>Fylke:</h4>
 						<RefinementList 
 							attribute="fylke" 
 							operator="or"
 							limit={20}
+							transformItems={sortItemsBySize}
 							/>
 						<h4>Kommune:</h4>
 						<RefinementList 
@@ -83,6 +99,8 @@ const Search = () => {
 								attribute="kommune" 
 								operator="or"
 						/>
+						<h4>Valgte filter:</h4>
+						<CurrentRefinements />
 
 						</div>
               <div className="search-panel__results">

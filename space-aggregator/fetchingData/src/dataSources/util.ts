@@ -1,5 +1,5 @@
 import { filePaths } from './Bookup/config';
-import { Space } from 'space-aggregator-types';
+import { Sourced, SourceOfInformation, Space } from 'space-aggregator-types';
 import fetch from 'node-fetch' 
 import fetchRetry from 'fetch-retry'
 import fs from 'fs'
@@ -15,6 +15,15 @@ export const fetchWithExponentialBackoff = fetchRetry(fetch as any, {
 	}
 })
 
+
+export const infoGenerator = (type: SourceOfInformation["type"]) => <T>(data: T, description?: string): Sourced<T> => ({
+	info: data,
+	source: {
+		type,
+		sourceDescription: description,
+		lastUpdated: Date.now() // TODO: Should set this to the date we fetched the info, not the date we parsed it
+	}
+})
 
 export const syncAll = async (
 	config: Config, 

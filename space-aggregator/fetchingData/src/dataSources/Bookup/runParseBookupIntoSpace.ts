@@ -1,6 +1,6 @@
 import { getKommuneAndFylkeFromLatLong } from './../geoDataApi';
 import { Space, Sourced, ContactInformation, BookupSpecifics, NorwegianAddress } from 'space-aggregator-types';
-import { parseSpecificsIntoSpaces } from "../util";
+import { parseSpecificsIntoSpaces, infoGenerator } from "../util";
 import * as bookupConfig from './config';
 import idFromAddress from '../idFromAddress';
 
@@ -12,15 +12,8 @@ const ParserFunctionBookupIntoSpace = async (
 	BookupSpecifics: BookupSpecifics[]
 ) => {
 	const spaces = [] as Space[]
-	
-	const info = <T>(data: T): Sourced<T> => ({
-		info: data,
-		source: {
-			type: 'bookup',
-			lastUpdated: Date.now() // TODO: Should set this to the date we fetched the info, not the date we parsed it
-		}
-	})
 
+	const info = infoGenerator('bookup')
 
 	for (let index = 0; index < BookupSpecifics.length; index++) {
 		const RentObject = BookupSpecifics[index].RentObject
@@ -108,6 +101,13 @@ const ParserFunctionBookupIntoSpace = async (
 			// That something is probably not a place anyway.
 		}
 
+		if (RentObject.SizeSqM2) {
+			SpaceContents.sizeInSqm = info(RentObject.SizeSqM2)
+		}
+		if (RentObject.SizePeople) {
+			SpaceContents.fitsPeople = info(RentObject.SizePeople)
+		}
+		// TODO: Find out if we can do wholeBuilding somehow from Bookup data
 
 		// TODO: Decide if and how to include this data
 		addMetaInfo(
@@ -124,12 +124,6 @@ const ParserFunctionBookupIntoSpace = async (
 		)
 		addMetaInfo(
 			RentObject.PartInfo
-		)
-		addMetaInfo(
-			RentObject.SizeSqM2
-		)
-		addMetaInfo(
-			RentObject.SizePeople
 		)
 		addMetaInfo(
 			RentObject.Medias
