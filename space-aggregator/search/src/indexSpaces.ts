@@ -29,11 +29,15 @@ const fillWithData = async () => {
   const Combined  = [...NSR, ...Bookup]
   for (let index = 0; index < Combined.length; index++) {
     const space = Combined[index];
-    const rating = Math.floor(Math.random()*100) // No rating yet, but here's a random one
+    const rating = 0 // No rating yet
+
+    const includesLinkToBookingPage = !!(space.connectedBookingServices && space.connectedBookingServices.length > 0)
+
     const spaceSearchDocument = {
       ...extractSearchDocumentDataFromSpaceData(space),
       rating,
       ...space.address,
+      includesLinkToBookingPage,
       fullData: space 
     }
     try {

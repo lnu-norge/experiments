@@ -21,6 +21,7 @@ const spaceIndex = {
     {name: 'postnumber', type: 'string', facet: true },
     {name: 'poststed', type: 'string', facet: true  },
     {name: 'addressAsId', type: 'string', facet: true },
+    {name: 'includesLinkToBookingPage', type: 'bool', facet: true },
   ],
   'default_sorting_field': 'rating'
 }

@@ -9,7 +9,8 @@ import {
   SearchBox,
 	Pagination,
 	RefinementList,
-	HitsPerPage
+	HitsPerPage,
+	ToggleRefinement
 } from 'react-instantsearch-dom'
 import './Search.css'
 
@@ -61,6 +62,14 @@ const Search = () => {
                     placeholder: '',
                   }}
                 />
+						<h4>Hvordan bookes det:</h4>
+						<RefinementList 
+							attribute="includesLinkToBookingPage" 
+							transformItems={(items: any) => items.map((item: any) => ({
+								...item, 
+								label: item.label === "true" ? "Bookingsystem" : "Kontakt for avtale" 
+							}))}
+							/>
 						<h4>Fylke:</h4>
 						<RefinementList 
 							attribute="fylke" 
