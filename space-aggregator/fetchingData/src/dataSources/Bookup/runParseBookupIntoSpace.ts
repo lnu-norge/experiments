@@ -91,6 +91,8 @@ const ParserFunctionBookupIntoSpace = async (
 							SpaceContents.fylke = kommuneData?.fylkesnavn
 							SpaceContents.fylkesNummer = kommuneData?.fylkesnummer
 						}
+					} else {
+						console.error('missing lat and lon for object', SpaceContents.title)
 					}
 				
 				}	catch (error) {
