@@ -14,6 +14,7 @@ import {
 	CurrentRefinements,
 } from 'react-instantsearch-dom'
 import './Search.css'
+import SearchByMap from './Map';
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
@@ -93,6 +94,7 @@ const Search = () => {
 
 						<h4>Fylke:</h4>
 						<RefinementList 
+							searchable
 							attribute="fylke" 
 							operator="or"
 							limit={20}
@@ -106,11 +108,13 @@ const Search = () => {
 						/>
 						<h4>Valgte filter:</h4>
 						<CurrentRefinements />
-
+						
 						</div>
               <div className="search-panel__results">
                 
-							
+								{/* <SearchByMap 
+									
+								/> */}
                 <Hits hitComponent={Hit} />
 
 

@@ -1,12 +1,13 @@
 const Typesense = require('typesense') as any
+require('dotenv').config()
 
 const client = new Typesense.Client({
   'nodes': [{
     'host': 'localhost',
-    'port': '8067',
+    'port': '8067', // LNU birthday is 7/6/1980
     'protocol': 'http'
   }],
-  'apiKey': 'LNU_tester_bra_saker_for_alle__Slapp_av_denne_skal_ikke_brukes_i_prod',
+  'apiKey': process.env.typesense_api_key,
   'connectionTimeoutSeconds': 2
 })
 
