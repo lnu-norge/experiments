@@ -1,13 +1,20 @@
 const Typesense = require('typesense') as any
 require('dotenv').config()
 
+const {
+  typesense_api_key,
+  typesense_host,
+  typesense_protocol,
+  typesense_port
+} = process.env
+
 const client = new Typesense.Client({
   'nodes': [{
-    'host': 'localhost',
-    'port': '8067', // LNU birthday is 7/6/1980
-    'protocol': 'http'
+    'host': typesense_host,
+    'port': typesense_port, 
+    'protocol': typesense_protocol
   }],
-  'apiKey': process.env.typesense_api_key,
+  'apiKey': typesense_api_key,
   'connectionTimeoutSeconds': 2
 })
 
