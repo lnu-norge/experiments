@@ -9,25 +9,31 @@ let searchParameters = {
 }
 
 console.log('NEW SEARCH __________')
-client.collections("spaces")
-	.documents()
-	.search(searchParameters)
-	.then((searchResults: any) => {
-		console.log(searchResults)
-			console.log(searchResults.facet_counts[0].counts)
+const test = async () => {
+	const collections = await client.collections().retrieve()
+	console.log(collections)
+}
+test()
+
+// client.collections("spaces")
+// 	.documents()
+// 	.search(searchParameters)
+// 	.then((searchResults: any) => {
+// 		console.log(searchResults)
+// 			console.log(searchResults.facet_counts[0].counts)
 			
-			if (!searchResults.grouped_hits) {
-				searchResults.hits.map((hit: any) => {
-						console.log(hit.document.title)
-				})
-			} else {
-				searchResults.grouped_hits.map((group: any) => {
-					console.log('group', group.group_key)
-					group.hits.map((hit: any) => {
-						console.log(hit.document.title)
-				})})
+// 			if (!searchResults.grouped_hits) {
+// 				searchResults.hits.map((hit: any) => {
+// 						console.log(hit.document.title)
+// 				})
+// 			} else {
+// 				searchResults.grouped_hits.map((group: any) => {
+// 					console.log('group', group.group_key)
+// 					group.hits.map((hit: any) => {
+// 						console.log(hit.document.title)
+// 				})})
 
-			}
+// 			}
 
 
-	})
+// 	})

@@ -5,8 +5,8 @@
   "main": "index.js",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "search:start": "./typesenseForMac/start.sh",
-    "search:stop": "./typesenseForMac/stop.sh",
+    "search:start": "./typesense/start.sh",
+    "search:stop": "./typesense/stop.sh",
     "search:create": "ts-node ./src/createIndex.ts",
     "search:indexSpaces": "ts-node ./src/indexSpaces.ts",
     "search": "nodemon ./src/searchSpaces.ts"
