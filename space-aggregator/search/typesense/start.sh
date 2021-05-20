@@ -1,4 +1,5 @@
 #!/bin/bash
 
-cd ./typesenseForMac
+cd ./typesense
+
 ./typesense-server --config typesense-server.ini --enable-cors &

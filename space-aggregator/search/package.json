@@ -5,6 +5,7 @@
   "main": "index.js",
   "license": "GPL-3.0-or-later",
   "scripts": {
+    "search:install":  "./typesense/install.sh",
     "search:start": "./typesense/start.sh",
     "search:stop": "./typesense/stop.sh",
     "search:create": "ts-node ./src/createIndex.ts",
