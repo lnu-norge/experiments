@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ./typesense
  
  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
