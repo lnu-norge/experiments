@@ -45,7 +45,7 @@ const fillWithData = async () => {
       await client.collections('spaces').documents().create(spaceSearchDocument)
     } catch(error) {
       console.error(error)
-      index = NSR.length
+      index = Combined.length
     } 
   }
 }

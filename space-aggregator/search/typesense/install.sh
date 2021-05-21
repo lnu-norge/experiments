@@ -1,7 +1,9 @@
 #!/bin/bash
 
 cd ./typesense
- 
+mkdir logs
+mkdir data
+
  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         # ...
 				wget https://dl.typesense.org/releases/0.20.0/typesense-server-0.20.0-linux-amd64.tar.gz -O - | tar -xz

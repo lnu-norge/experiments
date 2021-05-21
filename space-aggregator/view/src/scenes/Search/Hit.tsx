@@ -25,7 +25,7 @@ const BookViaLenke = ({BookingService} : {BookingService: BookingService}) => {
 const VisBookingLenker = ({fullData}: {fullData: Space}) => {
   if (fullData.connectedBookingServices) {
     return <>
-      {fullData.connectedBookingServices.map(booking => <p><BookViaLenke BookingService={booking}/></p>)}
+      {fullData.connectedBookingServices.map(booking => <p key={`${fullData.title}${booking.bookingUri}`}><BookViaLenke BookingService={booking}/></p>)}
     </>
   }
 
@@ -37,7 +37,6 @@ const PropsToConsole = ({props}: any) => {
 }
 
 const Hit = (props: {hit: any}) => {
-  console.log(props)
   const fullData = props.hit.fullData as Space
   const {
     contacts,
@@ -57,7 +56,7 @@ const Hit = (props: {hit: any}) => {
       <VisBookingLenker fullData={fullData} />
       <hr />
       <h4>Kontaktinfo:</h4>
-      {contacts && contacts.map(contact => <ContactInfo sourcedContactInfo={contact} />)}
+      {contacts && contacts.map((contact) => <ContactInfo key={`${fullData.title}-${contact.info.email}-${contact.info.phone}-${contact.source.type}`} sourcedContactInfo={contact} />)}
       <hr />
       {description?.value && <div dangerouslySetInnerHTML={{__html: description.value}}></div>}
       <p>

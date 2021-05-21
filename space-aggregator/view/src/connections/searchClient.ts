@@ -1,14 +1,22 @@
 // @ts-ignore No Typescript for TypeSense yet
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
+
+const { 
+  REACT_APP_TYPESENSE_APIKEY, 
+  REACT_APP_TYPESENSE_HOST,
+  REACT_APP_TYPESENSE_PORT,
+  REACT_APP_TYPESENSE_PROTOCOL
+} = process.env
+
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: "LNU_tester_bra_saker_for_alle__Slapp_av_denne_skal_ikke_brukes_i_prod", // TODO: Switch to search only key, and generate keys on startup
+    apiKey: REACT_APP_TYPESENSE_APIKEY, // TODO: Switch to search only key, and generate keys on startup
     nodes: [
       {
-        host: "localhost",
-        port: "8067",
-        protocol: "http"
+        host: REACT_APP_TYPESENSE_HOST,
+        port: REACT_APP_TYPESENSE_PORT,
+        protocol: REACT_APP_TYPESENSE_PROTOCOL
       }
     ]
   },
