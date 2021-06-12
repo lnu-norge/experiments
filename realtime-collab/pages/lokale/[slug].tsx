@@ -8,7 +8,6 @@ import { WebrtcProvider } from 'y-webrtc'
 import QuillCursors from 'quill-cursors'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
-const QuillCursors = dynamic(() => import('quill-cursors'), { ssr: false })
 
 
 /** Editor:
