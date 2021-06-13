@@ -6,20 +6,24 @@ const RealtimeTextarea = dynamic(() => import('../../components/RealtimeTextarea
 
 /** Editor:
  * 
- * TODO: Testing realtime editing, with a text field connected to the right slug
- * TODO: Show who is active on realtime editing
+ * DONE: Testing realtime editing, with a text field connected to the right slug
+ * TODO: Persist storage somewhere
  * 
  */
 
 
-const Lokale = () => {
+const YJSTest = () => {
 	
 	const router = useRouter()
   const { slug } = router.query
 
-  return <>{slug}: <RealtimeTextarea /></>
+  return <>{slug}: 
+  	<RealtimeTextarea 
+  		id={slug as string}
+  	/>
+  </>
 
 
 }
 
-export default Lokale
+export default YJSTest
