@@ -8,6 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.15.1",
+    "mobx": "^6.3.2",
+    "mobx-react-lite": "^3.2.0",
     "next": "10.2.3",
     "react": "17.0.2",
     "react-dom": "17.0.2"
