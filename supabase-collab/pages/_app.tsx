@@ -1,17 +1,25 @@
 import '../styles/globals.css'
-import { useAppState } from "../state/AppStateProvider"
+import AppStateProvider, { useAppState } from "../state/AppStateProvider"
 import { observer } from "mobx-react-lite"
-import React from 'react'
+import React, { useEffect } from 'react'
 import LoginForm from '../components/LoginForm'
+import { listenForAuth } from '../database/userAndLogin'
 
 function MyApp({ Component, pageProps }) {
   const { user } = useAppState().login 
   
-  if (!user) return <>You need to login first...  
+  useEffect(() => {
+    listenForAuth()
+  }, [])
+
+  if (!user) return <AppStateProvider>
+    You need to login first...  
     <LoginForm />
-  </>
+    </AppStateProvider>
   
-  return <Component {...pageProps} />
+  return <AppStateProvider>
+    <Component {...pageProps} />
+  </AppStateProvider>
 }
 
 export default observer(MyApp)
