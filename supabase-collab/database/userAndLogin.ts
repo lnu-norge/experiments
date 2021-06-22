@@ -12,9 +12,7 @@ export const startLogin = async (email: string) => {
 		AppState.login.setLoadingLogin(false)
 		throw(error)
 	}
-	
 	return true 
-
 }
 
 export const logout = async () => {
@@ -23,7 +21,6 @@ export const logout = async () => {
 
 export const listenForAuth = () => {
 	supabase.auth.onAuthStateChange((event, session) => {
-		debugger
 		if (session && session.user && session.user.email) {
 			// Logged in!
 			return AppState.login.setUser({
