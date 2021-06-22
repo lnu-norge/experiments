@@ -2,66 +2,81 @@
  * 
  * Testing realtime editing, with a shared text field connected to the right slug
  * 
- * TODO: Persist storage somewhere, presumably using something other than webrtc
- * 
  */
 
+import { useEffect, useState } from "react"
+import supabase from "../database/supabaseClient"
+import { Lokale } from "../types/Lokale"
 
-import * as Y from 'yjs'
-import { WebrtcProvider } from 'y-webrtc'
-import { QuillBinding } from 'y-quill'
-import Quill from 'quill'
-import QuillCursors from 'quill-cursors'
-import { useEffect, useRef } from 'react'
-import 'react-quill/dist/quill.snow.css';
+const useSpaceData = (id: string): [Lokale, (lokale: Partial<Lokale>) => void, (lokale: Partial<Lokale>) => void] => {
+  const [spaceData, setSpaceData] = useState<Lokale>(null)
 
-Quill.register('modules/cursors', QuillCursors)
- 
+  const fetchSupabaseData = async () => {
+    const { data, error } = await supabase
+      .from('lokaler')
+      .select()
+      .eq('id', id)
+      .single()
+      setSpaceData(data)
+  }
+
+  const subscribeToData = () => {
+    return supabase.from(`lokaler:id=eq.${id}`).on('*', (payload => {
+      console.log(payload)
+      setSpaceData(payload.new)
+    })).subscribe()
+  }
+
+  const mutateData = (lokale: Partial<Lokale>) => {
+    setSpaceData({
+      ...spaceData,
+      ...lokale
+    })
+    storeData(lokale)
+  }
+
+  const storeData = async (lokale: Partial<Lokale>) => {
+    console.log("Attemptint to store ", lokale)
+    const { data, error } = await supabase.from('lokaler').upsert({
+      id,
+      ...lokale
+    })
+    console.log(data, error)
+    return data
+  }
+
+  useEffect(() => {
+    fetchSupabaseData()
+    const subscription = subscribeToData()
+    return () => {
+      supabase.removeSubscription(subscription)
+      setSpaceData(null)
+    }
+  }, [id])
+  return [spaceData, mutateData, storeData] 
+}
+
 const RealtimeTextarea = ({id}: {id: string}) => {
- 
-const textareaRef = useRef<HTMLDivElement>()
+   const [data, mutate, store] = useSpaceData(id)
 
-useEffect(() => {
+   if (!data) {
+     return <>Loading...</>
+   }
 
-  // A Yjs document holds the shared data
-  const ydoc = new Y.Doc()
-  
-  const provider = new WebrtcProvider(id, ydoc)
-  
-  // Define a shared text type on the document
-  const ytext = ydoc.getText('quill')
-
-// Creat a quill editor
-  const quill = new Quill(textareaRef.current, {
-    modules: {
-      cursors: true,
-      toolbar: [
-        // adding some basic Quill content features
-        [{ header: [1, 2, false] }],
-        ['bold', 'italic', 'underline'],
-        ['image', 'code-block']
-      ],
-      history: {
-        // Local undo shouldn't undo changes
-        // from remote users
-        userOnly: true
-      }
-    },
-    placeholder: 'Start collaborating...',
-    theme: 'snow' // 'bubble' is also great
-  })
-  
-
-  // "Bind" the quill editor to a Yjs text type.
-  const binding = new QuillBinding(ytext, quill, provider.awareness)
-  
-  // Remove the selection when the iframe is blurred
-  window.addEventListener('blur', () => { quill.blur() })
-  
-})
- 
- return <div ref={textareaRef}>
-    </div>
+   return <>
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        store(data)
+      }}>
+        <h2>{data.title}</h2>
+        <p>{data.description}</p>
+        <textarea  value={data.description} onChange={e => mutate({
+          description: e.target.value
+        })} />
+        <button type="submit">Send inn</button>
+      </form>
+    
+    </>
 }
 
 

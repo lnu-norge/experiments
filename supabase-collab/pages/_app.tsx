@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
   if (!user) return <AppStateProvider>
     You need to login first...  
     <LoginForm />
-    </AppStateProvider>
+  </AppStateProvider>
   
   return <AppStateProvider>
     <Component {...pageProps} />

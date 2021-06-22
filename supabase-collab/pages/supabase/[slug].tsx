@@ -1,13 +1,9 @@
 import { useRouter } from 'next/router'
-import dynamic from 'next/dynamic'
-
-const RealtimeTextarea = dynamic(() => import('../../components/RealtimeTextarea'), { ssr: false })
-
+import RealtimeTextarea from '../../components/RealtimeTextarea'
 
 /** Editor:
  * 
- * DONE: Testing realtime editing, with a text field connected to the right slug
- * TODO: Persist storage somewhere
+ * TODO: Testing realtime editing, with a text field connected to the right slug
  * 
  */
 
