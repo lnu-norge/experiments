@@ -11,6 +11,7 @@ export const endpoints = {
 export const filePaths = {
 	all: '../data/NSR_enheter.json',
 	specifics: '../data/NSR_schools.json',
-	parsed: '../data/parsedSchools.json'
+	parsed: '../data/parsedSchools.json',
+	rawParsed:  '../data/rawParsedSchools.json',
 
 }

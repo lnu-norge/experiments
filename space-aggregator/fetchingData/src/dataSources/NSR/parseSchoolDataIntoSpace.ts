@@ -11,6 +11,7 @@ import { getPoststedFromPostnummer } from '../geoDataApi';
 const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 	console.log(`Parsing ${nsrSchools.length} schools to LNU Space format...`)
 
+
 	const spaces = [] as Space[]
 
 
@@ -19,26 +20,44 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 
 	for (let index = 0; index < nsrSchools.length; index++) {
 		const nsr = nsrSchools[index]
+
+		// 	if (nsr.Besoksadresse?.Land !== null && nsr.Besoksadresse?.Land !== "Norge" ) {
+		// 	console.log(nsr.Besoksadresse?.Land, "IKke i Norge, skipper")
+		// 	continue
+		// }
+
+
 		const schoolTypes = [] as School__schoolType[]
+		if (nsr.ErVideregaaendeSkole && nsr.ErGrunnSkole && nsr.SkoleTrinnFra == 1 && nsr.SkoleTrinnTil == 13) {
+			schoolTypes.push('vgs')
+			schoolTypes.push('grunnskole')
+		} else 
 		if (nsr.ErVideregaaendeSkole) {
 			schoolTypes.push('vgs')
-		}
+		} else 
 		// Try to differentiate between barneskole and ungdomsskole,
 		// as nsr data just gives us "grunnskole":
 		if (nsr.SkoleTrinnFra && nsr.SkoleTrinnFra >= 1 && nsr.SkoleTrinnTil && nsr.SkoleTrinnTil <= 7) {
 			schoolTypes.push('barneskole')
-		} 
+		} else  
 		if (nsr.SkoleTrinnFra && nsr.SkoleTrinnFra >= 8 && nsr.SkoleTrinnTil && nsr.SkoleTrinnTil <= 10) {
 			schoolTypes.push('ungdomsskole')
-		} 
+		} else 
 		if (nsr.ErGrunnSkole && !schoolTypes.includes('barneskole') && !schoolTypes.includes('ungdomsskole')) {
 			// Didn't manage to differentiate, just put it as grunnskole:
 			schoolTypes.push('grunnskole')
+		} else 
+		{
+			console.error({
+				error: "Not handled schoolType",
+				id: nsr.NSRId,
+				orgnr: nsr.OrgNr,
+				name: nsr.Navn || nsr.FulltNavn
+			})
 		}
-		// Voksenopplæringgsenter:
-		if (nsr.SkoleTyper?.findIndex(type => type.Id === "10")) {
-			schoolTypes.push('voksenopplaeringssenter')
-		}
+
+		// If neither of those, then no need to list it:
+		if (schoolTypes.length == 0) continue 
 
 		let name = '(Mangler navn)'
 		if (nsr.Kallenavn && nsr.Navn) {
@@ -86,6 +105,8 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 			SpaceContents.meta.push(info(data))
 		}
 
+		addMetaInfo({nsrId: nsr.NSRId})
+
 		addMetaInfo({organizationalNumber: nsr.OrgNr})
 		addMetaInfo({skoleTrinn: {
 			fra: nsr.SkoleTrinnFra,
@@ -111,8 +132,6 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 			SpaceContents.address.poststed = await getPoststedFromPostnummer(SpaceContents.address.postnumber)
 		}
 
-		console.log('nsr', nsr.Besoksadresse)
-		console.log('norwegianaddresss', SpaceContents.address)
 		const addressAsId = SpaceContents.address && idFromAddress(SpaceContents.address) ? idFromAddress(SpaceContents.address)! : false
 		if (!addressAsId) {
 			continue 
@@ -133,6 +152,9 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 		}
 		SpaceContents.wholeBuildning = info(true) // True for all NSR schools? Probably... But not necessarily.
 	
+		const rawOwner = nsr.ErOffentligSkole && nsr.ParentRelasjoner && nsr.ParentRelasjoner.find(relasjon => relasjon.RelasjonsType?.Navn == "Administrativ struktur")?.Enhet
+
+
 		spaces.push({
 			addressAsId,
 			title: info(name),
@@ -143,6 +165,10 @@ const parseSchoolDataIntoSpaces = async (nsrSchools: NSR_School[]) => {
 			kommuneNummer: nsr.Kommune?.Kommunenr,
 			fylke: nsr.Fylke?.Navn,
 			fylkesNummer: nsr.Fylke?.Fylkesnr,
+			owner: rawOwner && rawOwner.Navn && rawOwner.OrgNr ? info({
+				title: rawOwner.Navn,
+				organizationNumber: rawOwner.OrgNr
+			}) : undefined,
 			...SpaceContents
 		})
 	}

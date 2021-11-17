@@ -61,6 +61,11 @@ export interface Sourced<T> {
 	changelog?: Change<T>[]
 	source: SourceOfInformation
 }
+
+export interface Owner extends Organization {
+	title: string
+}
+
 export interface Space extends Place {
 	addressAsId: string
 	title: Sourced<string>
@@ -73,4 +78,5 @@ export interface Space extends Place {
 	fitsPeople?: Sourced<number>
 	sizeInSqm?: Sourced<number>
 	wholeBuildning?: Sourced<boolean>
+	owner?: Sourced<Owner>
 }

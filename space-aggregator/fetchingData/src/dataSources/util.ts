@@ -6,7 +6,7 @@ import fs from 'fs'
 
 interface Config { 
 	endpoints: { 
-		uri: string, all: string, specific: (id: string|number) => string }, filePaths: { all: string, specifics: string, parsed: string } }
+		uri: string, all: string, specific: (id: string|number) => string }, filePaths: { all: string, specifics: string, parsed: string, rawParsed: string } }
 
 export const fetchWithExponentialBackoff = fetchRetry(fetch as any, {
 	retries: 6,
@@ -119,7 +119,9 @@ export const parseSpecificsIntoSpaces = async <T>(
 		const spaces = await parserFunction(specifics)
 		
 		// Store them:
-		fs.writeFileSync(filePaths.parsed, JSON.stringify(spaces))
+		fs.writeFileSync(filePaths.rawParsed, JSON.stringify(spaces))
+		const { execSync } = require('child_process');
+		execSync(`cat ${filePaths.rawParsed} | python -mjson.tool > ${filePaths.parsed}`)
 		console.log(`Stored ${spaces.length} parsed elements to`, filePaths.parsed)
 
 		// Then return them:
